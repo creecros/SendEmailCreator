@@ -28,7 +28,7 @@ class SendTaskAssignee extends Base
     {
         return array(
             'column_id' => t('Column'),
-	          'subject' => t('Email subject'),
+	    'subject' => t('Email subject'),
         );
     }
 
@@ -40,7 +40,7 @@ class SendTaskAssignee extends Base
             'task' => array(
                 'project_id',
                 'column_id',
-		            'owner_id',
+		'owner_id',
             ),
         );
     }
