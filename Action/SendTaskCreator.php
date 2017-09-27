@@ -10,7 +10,7 @@ class SendTaskCreator extends Base
    
     public function getDescription()
     {
-        return t('Send a task by email to someone');
+        return t('Send a task by email to creator');
     }
 
    
