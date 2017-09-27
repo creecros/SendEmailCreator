@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Action\SendEmailCreator\Action;
+namespace Kanboard\Plugin\SendEmailCreator\Action;
 
 use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
