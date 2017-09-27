@@ -28,8 +28,7 @@ class SendTaskCreator extends Base
     {
         return array(
             'column_id' => t('Column'),
-	    'user_id' => 0,
-            'subject' => t('Email subject'),
+	    'subject' => t('Email subject'),
         );
     }
 
