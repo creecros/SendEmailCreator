@@ -3,6 +3,7 @@
 namespace Kanboard\Action\SendEmailCreator\Action;
 
 use Kanboard\Model\TaskModel;
+use Kanboard\Action\Base;
 
 class EmailCreator extends Base
 {
