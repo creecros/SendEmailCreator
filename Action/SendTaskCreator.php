@@ -4,7 +4,7 @@ namespace Kanboard\Action;
 
 use Kanboard\Model\TaskModel;
 
-class TaskEmail extends Base
+class EmailCreator extends Base
 {
    
     public function getDescription()
