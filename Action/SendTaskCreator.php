@@ -5,7 +5,7 @@ namespace Kanboard\Plugin\SendEmailCreator\Action;
 use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
 
-class EmailCreator extends Base
+class SendTaskCreator extends Base
 {
    
     public function getDescription()
