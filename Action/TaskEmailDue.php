@@ -83,7 +83,7 @@ class TaskEmailDue extends Base
         $t_creator = $this->userModel->getById($data['task']['creator_id']);
         if (! empty($user['email'])) {
             foreach ($data['tasks'] as $task) {
-                $duration = time() - $task['due_date'];
+                $duration = $task['due_date'] - time();
                 if ($duration < $max) {
                     $results[] = $this->sendEmail($task['id'], $user);
                     $results[] = $this->sendEmail($task['id'], $t_assignee);
