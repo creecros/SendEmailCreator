@@ -58,6 +58,7 @@ class TaskEmailDue extends Base
                 'project_id',
                 'column_id',
             	'owner_id',
+                'due_date',
               ),
         );
         
@@ -78,24 +79,31 @@ class TaskEmailDue extends Base
     {
         $results = array();
         $max = $this->getParam('duration') * 86400;
-        $t_assignee = $this->userModel->getById($data['task']['owner_id']);
-        $t_creator = $this->userModel->getById($data['task']['creator_id']);
-        if (! empty($t_assignee['email'])) {
-            foreach ($data['tasks'] as $task) {
+        
+        foreach ($data['tasks'] as $task) {
+            $t_assignee = $this->userModel->getById($data['task']['owner_id']);
+            if (! empty($task['due_date'])) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
-                    $results[] = $this->sendEmail($task['id'], $t_assignee);
+                    if (! empty($t_assignee['email'])) {
+                      $results[] = $this->sendEmail($task['id'], $t_assignee);
+                    }
                 }
             }
         }
-        if (! empty($t_creator['email'])) {
-            foreach ($data['tasks'] as $task) {
+        
+        foreach ($data['tasks'] as $task) {
+            $t_creator = $this->userModel->getById($data['task']['creator_id']);
+            if (! empty($task['due_date'])) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
-                    $results[] = $this->sendEmail($task['id'], $t_creator);
+                    if (! empty($t_creator['email'])) {
+                        $results[] = $this->sendEmail($task['id'], $t_creator);
+                    }
                 }
             }
         }
+        
         return in_array(true, $results, true);
     }
     /**
