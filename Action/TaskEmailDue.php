@@ -81,7 +81,7 @@ class TaskEmailDue extends Base
         $max = $this->getParam('duration') * 86400;
         
         foreach ($data['tasks'] as $task) {
-            $t_assignee = $this->userModel->getById($data['task']['owner_id']);
+            $t_assignee = $this->userModel->getById($task['owner_id']);
             if (! empty($task['due_date'])) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
@@ -93,7 +93,7 @@ class TaskEmailDue extends Base
         }
         
         foreach ($data['tasks'] as $task) {
-            $t_creator = $this->userModel->getById($data['task']['creator_id']);
+            $t_creator = $this->userModel->getById($task['creator_id']);
             if (! empty($task['due_date'])) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
