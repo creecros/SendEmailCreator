@@ -58,6 +58,7 @@ class TaskEmailDue extends Base
                 'project_id',
                 'column_id',
             	'owner_id',
+              ),
         );
         
     }
