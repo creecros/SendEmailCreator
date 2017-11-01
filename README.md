@@ -1,5 +1,5 @@
 # Auto Email Extended Actions
-This plugin will add s3new automatic actions to Kanboard.
+This plugin will add 3 new automatic actions to Kanboard.
 
 *1.) Send task by email to assignee*
 
