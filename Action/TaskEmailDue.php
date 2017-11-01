@@ -40,7 +40,6 @@ class TaskEmailDue extends Base
     public function getActionRequiredParameters()
     {
         return array(
-            'user_id' => t('User that will receive the email'),
             'subject' => t('Email subject'),
             'duration' => t('Duration in days'),
         );
@@ -58,7 +57,7 @@ class TaskEmailDue extends Base
         'task' => array(
                 'project_id',
                 'column_id',
-            		'owner_id',
+            	'owner_id',
         );
         
     }
@@ -78,14 +77,12 @@ class TaskEmailDue extends Base
     {
         $results = array();
         $max = $this->getParam('duration') * 86400;
-        $user = $this->userModel->getById($this->getParam('user_id'));
         $t_assignee = $this->userModel->getById($data['task']['owner_id']);
         $t_creator = $this->userModel->getById($data['task']['creator_id']);
         if (! empty($user['email'])) {
             foreach ($data['tasks'] as $task) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
-                    $results[] = $this->sendEmail($task['id'], $user);
                     $results[] = $this->sendEmail($task['id'], $t_assignee);
                     $results[] = $this->sendEmail($task['id'], $t_creator);
                 }
