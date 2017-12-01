@@ -85,7 +85,7 @@ class TaskEmailDue extends Base
             if (! empty($task['due_date'])) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
-                    if (! empty($t_assignee['email'])) {
+                    if (! empty($user['email'])) {
                       $results[] = $this->sendEmail($task['id'], $user);
                     }
                 }
@@ -97,7 +97,7 @@ class TaskEmailDue extends Base
             if (! empty($task['due_date'])) {
                 $duration = $task['due_date'] - time();
                 if ($duration < $max) {
-                    if (! empty($t_creator['email'])) {
+                    if (! empty($user['email'])) {
                         $results[] = $this->sendEmail($task['id'], $user);
                     }
                 }
