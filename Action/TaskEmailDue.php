@@ -52,15 +52,7 @@ class TaskEmailDue extends Base
      */
     public function getEventRequiredParameters()
     {
-        return array(
-        'tasks',
-        'task' => array(
-                'project_id',
-                'column_id',
-            	'owner_id',
-                'due_date',
-              ),
-        );
+        return array('tasks');
         
     }
     /**
@@ -82,26 +74,26 @@ class TaskEmailDue extends Base
         
         foreach ($data['tasks'] as $task) {
             $user = $this->userModel->getById($task['owner_id']);
-            if (! empty($task['date_due'])) {
+          
                 $duration = $task['date_due'] - time();
                 if ($duration < $max) {
                     if (! empty($user['email'])) {
                       $results[] = $this->sendEmail($task['id'], $user);
                     }
                 }
-            }
+           
         }
         
         foreach ($data['tasks'] as $task) {
             $user = $this->userModel->getById($task['creator_id']);
-            if (! empty($task['date_due'])) {
+           
                 $duration = $task['date_due'] - time();
                 if ($duration < $max) {
-                    if (! empty($user['email'])) {
+                
                         $results[] = $this->sendEmail($task['id'], $user);
-                    }
+                    
                 }
-            }
+           
         }
         
         return in_array(true, $results, true);
