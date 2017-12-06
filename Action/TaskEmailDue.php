@@ -82,8 +82,8 @@ class TaskEmailDue extends Base
         
         foreach ($data['tasks'] as $task) {
             $user = $this->userModel->getById($task['owner_id']);
-            if (! empty($task['due_date'])) {
-                $duration = $task['due_date'] - time();
+            if (! empty($task['date_due'])) {
+                $duration = $task['date_due'] - time();
                 if ($duration < $max) {
                     if (! empty($user['email'])) {
                       $results[] = $this->sendEmail($task['id'], $user);
@@ -94,8 +94,8 @@ class TaskEmailDue extends Base
         
         foreach ($data['tasks'] as $task) {
             $user = $this->userModel->getById($task['creator_id']);
-            if (! empty($task['due_date'])) {
-                $duration = $task['due_date'] - time();
+            if (! empty($task['date_due'])) {
+                $duration = $task['date_due'] - time();
                 if ($duration < $max) {
                     if (! empty($user['email'])) {
                         $results[] = $this->sendEmail($task['id'], $user);
