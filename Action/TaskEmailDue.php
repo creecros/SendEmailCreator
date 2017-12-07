@@ -1,4 +1,5 @@
 <?php
+
 namespace Kanboard\Plugin\SendEmailCreator\Action;
 
 use Kanboard\Model\TaskModel;
