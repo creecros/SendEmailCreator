@@ -10,6 +10,7 @@ use Kanboard\Core\Plugin\Base;
 use Kanboard\Plugin\SendEmailCreator\Action\SendTaskAssignee;
 use Kanboard\Plugin\SendEmailCreator\Action\SendTaskCreator;
 use Kanboard\Plugin\SendEmailCreator\Action\TaskEmailDue;
+use Kanboard\Plugin\SendEmailCreator\Action\SubTaskEmailDue;
 
 
 
@@ -24,6 +25,7 @@ class Plugin extends Base
 		$this->actionManager->register(new SendTaskCreator($this->container));
     	        $this->actionManager->register(new SendTaskAssignee($this->container));
 		$this->actionManager->register(new TaskEmailDue($this->container));
+		$this->actionManager->register(new SubTaskEmailDue($this->container));
 	}
 
 	
@@ -39,7 +41,7 @@ class Plugin extends Base
 
 	public function getPluginVersion() 
 	{ 	 
-		return '0.0.2'; 
+		return '0.0.3'; 
 	}
 
 	public function getPluginDescription() 
