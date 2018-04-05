@@ -18,7 +18,7 @@ class SubTaskEmailDue extends Base
      */
     public function getDescription()
     {
-        return t('Send email notification of impending due date');
+        return t('Send email notification of impending subtask due date');
     }
     /**
      * Get the list of compatible events
