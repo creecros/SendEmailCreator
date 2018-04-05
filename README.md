@@ -7,6 +7,8 @@ This plugin will add 3 new automatic actions to Kanboard.
 
 *3.) Send email of an impending due date*
 
+*4.) Send email of an impending subtask due date to assigned user*
+
 ## Send Email to Assignee
 
 This Automatic Action will allow you to send by email, a task to the assignee.
