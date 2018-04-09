@@ -53,8 +53,7 @@ class SubTaskEmailDue extends Base
      */
     public function getEventRequiredParameters()
     {
-        return array('subtasks');
-        
+        return array('tasks');        
     }
     /**
      * Check if the event data meet the action condition
@@ -65,18 +64,29 @@ class SubTaskEmailDue extends Base
      */
     public function hasRequiredCondition(array $data)
     {
-        return count($data['subtasks']) > 0;
+        $subs = array();
+        
+        foreach ($data['tasks'] as $task) {
+          $subs[] = $this->subtaskModel->getAll($task['id']);
+        }
+        
+        return count($subs) > 0;
     }
 
     public function doAction(array $data)
     {
         $results = array();
+        $subtasks = array();
         $max = $this->getParam('duration') * 86400;
         
-        foreach ($data['subtasks'] as $subtask) {
-            $user = $this->userModel->getById($subtask['user_id']);
+        foreach ($data['tasks'] as $task) {
+          $subtasks[] = $this->subtaskModel->getAll($task['id']);
+        }
+        
+        foreach ($subtasks as $subtask) {
+            $user = $this->userModel->getById($subtask['owner_id']);
           
-                $duration = $subtask['date_due'] - time();
+                $duration = $subtask['due_date'] - time();
                 if ($subtask['due_date'] > 0) {
                   if ($duration < $max) {
                       if (! empty($user['email'])) {
