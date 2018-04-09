@@ -77,7 +77,7 @@ class SubTaskEmailDue extends Base
           $subtasks = $this->subtaskModel->getAll($task['id']);
             
             foreach ($subtasks as $subtask) {
-            $user = $this->userModel->getById($subtask['owner_id']);
+            $user = $this->userModel->getById($subtask['user_id']);
           
                 $duration = $subtask['due_date'] - time();
                 if ($subtask['due_date'] > 0) {
