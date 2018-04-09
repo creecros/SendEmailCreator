@@ -24,7 +24,7 @@ this action will send an email of an impending due date to both creator and assi
 
 ## Send email of an impending subtask due date
 
-this action will send an email of an impending due date to the subtask assignee. Duration is defined by user, i.e. 1 day would start sending emails of tasks when there is less than 1 day before due date. Subtask matked as "Done" will be ignored.
+this action will send an email of an impending due date to the subtask assignee. Duration is defined by user, i.e. 1 day would start sending emails of tasks when there is less than 1 day before due date. Subtask matked as "Done" will be ignored. The "Subject" will be the name of the Subtask, and the "Body" of the Email will be the Task.
 
 ## Install
 Create a directory **SendEmailCreator** under the folder **plugins**
