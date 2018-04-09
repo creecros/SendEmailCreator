@@ -64,13 +64,7 @@ class SubTaskEmailDue extends Base
      */
     public function hasRequiredCondition(array $data)
     {
-        $subs = array();
-        
-        foreach ($data['tasks'] as $task) {
-          $subs[] = $this->subtaskModel->getAll($task['id']);
-        }
-        
-        return count($subs) > 0;
+       return count($data['tasks']) > 0;
     }
 
     public function doAction(array $data)
@@ -80,10 +74,9 @@ class SubTaskEmailDue extends Base
         $max = $this->getParam('duration') * 86400;
         
         foreach ($data['tasks'] as $task) {
-          $subtasks[] = $this->subtaskModel->getAll($task['id']);
-        }
-        
-        foreach ($subtasks as $subtask) {
+          $subtasks = $this->subtaskModel->getAll($task['id']);
+            
+            foreach ($subtasks as $subtask) {
             $user = $this->userModel->getById($subtask['owner_id']);
           
                 $duration = $subtask['due_date'] - time();
@@ -95,7 +88,11 @@ class SubTaskEmailDue extends Base
                   }
                 }
            
+            }
+            
         }
+        
+        
                 
         return in_array(true, $results, true);
     }
