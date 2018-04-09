@@ -41,7 +41,7 @@ class SubTaskEmailDue extends Base
     public function getActionRequiredParameters()
     {
         return array(
-            'subject' => t('Email subject'),
+            // 'subject' => t('Email subject'),
             'duration' => t('Duration in days'),
         );
     }
@@ -81,10 +81,12 @@ class SubTaskEmailDue extends Base
           
                 $duration = $subtask['due_date'] - time();
                 if ($subtask['due_date'] > 0) {
-                  if ($duration < $max) {
+                  if ($subtask['status'] < 2) {  
+                    if ($duration < $max) {
                       if (! empty($user['email'])) {
-                        $results[] = $this->sendEmail($subtask['task_id'], $user);
+                        $results[] = $this->sendEmail($subtask['task_id'], $subtask['title'], $user);
                       }
+                    }
                   }
                 }
            
@@ -104,13 +106,13 @@ class SubTaskEmailDue extends Base
      * @param  array   $user
      * @return boolean
      */
-    private function sendEmail($task_id, array $user)
+    private function sendEmail($task_id, $subject, array $user)
     {
         $task = $this->taskFinderModel->getDetails($task_id);
         $this->emailClient->send(
             $user['email'],
             $user['name'] ?: $user['username'],
-            $this->getParam('subject'),
+            $subject,
             $this->template->render('notification/task_create', array('task' => $task))
         );
         return true;
