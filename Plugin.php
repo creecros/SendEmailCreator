@@ -11,6 +11,7 @@ use Kanboard\Plugin\SendEmailCreator\Action\SendTaskAssignee;
 use Kanboard\Plugin\SendEmailCreator\Action\SendTaskCreator;
 use Kanboard\Plugin\SendEmailCreator\Action\TaskEmailDue;
 use Kanboard\Plugin\SendEmailCreator\Action\SubTaskEmailDue;
+use Kanboard\Core\Translator;
 
 
 
