@@ -27,6 +27,11 @@ class Plugin extends Base
 		$this->actionManager->register(new TaskEmailDue($this->container));
 		$this->actionManager->register(new SubTaskEmailDue($this->container));
 	}
+	
+	public function onStartup()
+        {
+               Translator::load($this->languageModel->getCurrentLanguage(), __DIR__.'/Locale');
+        }
 
 	
 	public function getPluginName()	
