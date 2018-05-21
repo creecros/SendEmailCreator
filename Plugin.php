@@ -37,7 +37,7 @@ class Plugin extends Base
 	
 	public function getPluginName()	
 	{ 		 
-		return 'Auto Email Action Extender'; 
+		return 'Auto Email Extended Actions'; 
 	}
 
 	public function getPluginAuthor() 
