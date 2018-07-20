@@ -21,6 +21,7 @@ class SendTaskCreator extends Base
             TaskModel::EVENT_CLOSE,
             TaskModel::EVENT_CREATE,
             TaskModel::EVENT_UPDATE,
+            TaskModel::EVENT_ASSIGNEE_CHANGE,
 	);
     }
 
