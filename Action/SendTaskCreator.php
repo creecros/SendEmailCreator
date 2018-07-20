@@ -20,7 +20,8 @@ class SendTaskCreator extends Base
             TaskModel::EVENT_MOVE_COLUMN,
             TaskModel::EVENT_CLOSE,
             TaskModel::EVENT_CREATE,
-        );
+            TaskModel::EVENT_UPDATE,
+	);
     }
 
    
