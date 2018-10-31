@@ -1,3 +1,6 @@
+## :star: If you use it, you should star it on Github! 
+- It's the least you can do for all the work put into it!
+
 # Auto Email Extended Actions
 This plugin will add 4 new automatic actions to Kanboard.
 
