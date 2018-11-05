@@ -3,6 +3,7 @@
 namespace Kanboard\Plugin\SendEmailCreator\Action;
 
 use Kanboard\Model\TaskModel;
+use Kanboard\Model\TaskMetadataModel;
 use Kanboard\Action\Base;
 
 /**
