@@ -75,7 +75,7 @@ class TaskEmailDue extends Base
         $max = $this->getParam('duration') * 86400;
         
         foreach ($data['tasks'] as $task) {
-            $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed', time() - 86400);
+            $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_toassignee', time() - 86400);
             $last_email_span = time() - $last_emailed;
             if ($last_email_span >= 86400) { $send_email = true; } else { $send_email = false; }
             
@@ -87,7 +87,7 @@ class TaskEmailDue extends Base
                       if (! empty($user['email'])) {
                           if ($send_email) {
                             $results[] = $this->sendEmail($task['id'], $user);
-                            $this->taskMetadataModel->save($task['id'], ['task_last_emailed' => time()]);
+                            $this->taskMetadataModel->save($task['id'], ['task_last_emailed_toassignee' => time()]);
                           }
                       }
                   }
@@ -96,7 +96,7 @@ class TaskEmailDue extends Base
         }
         
         foreach ($data['tasks'] as $task) {
-            $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed', time() - 86400);
+            $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_tocreator', time() - 86400);
             $last_email_span = time() - $last_emailed;
             if ($last_email_span >= 86400) { $send_email = true; } else { $send_email = false; }
             
@@ -108,7 +108,7 @@ class TaskEmailDue extends Base
                         if (! empty($user['email'])) {
                           if ($send_email) {
                             $results[] = $this->sendEmail($task['id'], $user);
-                            $this->taskMetadataModel->save($task['id'], ['task_last_emailed' => time()]);
+                            $this->taskMetadataModel->save($task['id'], ['task_last_emailed_tocreator' => time()]);
                           }
                         }
                                                         
