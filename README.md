@@ -1,3 +1,9 @@
+[![Latest release](https://img.shields.io/github/release/creecros/SendEmailCreator.svg)](https://github.com/creecros/SendEmailCreator/releases)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/creecros/SendEmailCreator/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/creecros/SendEmailCreator/graphs/contributors)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)]()
+[![Downloads](https://img.shields.io/github/downloads/creecros/SendEmailCreator/total.svg)](https://github.com/creecros/SendEmailCreator/releases)
+
 ## :star: If you use it, you should star it on Github! 
 - It's the least you can do for all the work put into it!
 
