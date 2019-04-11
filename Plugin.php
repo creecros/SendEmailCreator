@@ -1,10 +1,6 @@
 <?php
 
-
-
 namespace Kanboard\Plugin\SendEmailCreator;
-
-
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Plugin\SendEmailCreator\Action\SendTaskAssignee;
@@ -12,8 +8,6 @@ use Kanboard\Plugin\SendEmailCreator\Action\SendTaskCreator;
 use Kanboard\Plugin\SendEmailCreator\Action\TaskEmailDue;
 use Kanboard\Plugin\SendEmailCreator\Action\SubTaskEmailDue;
 use Kanboard\Core\Translator;
-
-
 
 class Plugin extends Base
 
@@ -47,7 +41,7 @@ class Plugin extends Base
 
 	public function getPluginVersion() 
 	{ 	 
-		return '0.0.6'; 
+		return '1.0.7'; 
 	}
 
 	public function getPluginDescription() 
