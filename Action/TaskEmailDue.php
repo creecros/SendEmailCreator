@@ -44,7 +44,7 @@ class TaskEmailDue extends Base
         return array(
             'subject' => t('Email subject'),
             'duration' => t('Duration in days'),
-            'send_to' => array('assignee' => t('Assignee'), 'creator' => t('Creator'), 'both' => t('Both')),
+            'send_to' => array('assignee' => t('Send to Assignee'), 'creator' => t('Send to Creator'), 'both' => t('Send to Both')),
         );
     }
     /**
