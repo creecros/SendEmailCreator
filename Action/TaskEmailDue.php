@@ -76,7 +76,7 @@ class TaskEmailDue extends Base
         $max = $this->getParam('duration') * 86400;
         
         
-        if (isset($this->getParam('send_to'))) { $send_to = $this->getParam('send_to'); } else { $send_to = 'both'; }
+        if ($this->getParam('send_to') !== null) { $send_to = $this->getParam('send_to'); } else { $send_to = 'both'; }
         
         if ($send_to = 'assignee' || $send_to = 'both') {
         foreach ($data['tasks'] as $task) {
