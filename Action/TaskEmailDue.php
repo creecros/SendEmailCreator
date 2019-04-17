@@ -75,7 +75,10 @@ class TaskEmailDue extends Base
         $results = array();
         $max = $this->getParam('duration') * 86400;
         
-        if ($this->getParam('send_to') = 'assignee' || $this->getParam('send_to') = 'both') {
+        
+        if (isset($this->getParam('send_to'))) { $send_to = $this->getParam('send_to'); } else { $send_to = 'both'); }
+        
+        if ($send_to = 'assignee' || $send_to = 'both') {
         foreach ($data['tasks'] as $task) {
             $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_toassignee', time() - 86400);
             $last_email_span = time() - $last_emailed;
@@ -98,7 +101,7 @@ class TaskEmailDue extends Base
         }
         }
         
-        if ($this->getParam('send_to') = 'creator' || $this->getParam('send_to') = 'both') {
+        if ($send_to = 'creator' || $send_to = 'both') {
         foreach ($data['tasks'] as $task) {
             $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_tocreator', time() - 86400);
             $last_email_span = time() - $last_emailed;
