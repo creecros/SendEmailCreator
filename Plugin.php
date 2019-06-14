@@ -3,8 +3,10 @@
 namespace Kanboard\Plugin\SendEmailCreator;
 
 use Kanboard\Core\Plugin\Base;
+use Kanboard\Model\CommentModel;
 use Kanboard\Plugin\SendEmailCreator\Action\SendTaskAssignee;
 use Kanboard\Plugin\SendEmailCreator\Action\SendTaskCreator;
+use Kanboard\Plugin\SendEmailCreator\Action\SendTaskComment;
 use Kanboard\Plugin\SendEmailCreator\Action\TaskEmailDue;
 use Kanboard\Plugin\SendEmailCreator\Action\SubTaskEmailDue;
 use Kanboard\Core\Translator;
@@ -18,9 +20,13 @@ class Plugin extends Base
 	{
         
 		$this->actionManager->register(new SendTaskCreator($this->container));
-    	        $this->actionManager->register(new SendTaskAssignee($this->container));
+		$this->actionManager->register(new SendTaskAssignee($this->container));
 		$this->actionManager->register(new TaskEmailDue($this->container));
 		$this->actionManager->register(new SubTaskEmailDue($this->container));
+		$this->actionManager->register(new SendTaskComment($this->container));
+		
+		$this->eventManager->register(CommentModel::EVENT_CREATE, 'On comment creation');
+
 	}
 	
 	public function onStartup()
@@ -41,7 +47,7 @@ class Plugin extends Base
 
 	public function getPluginVersion() 
 	{ 	 
-		return '1.1.0'; 
+		return '1.2.0'; 
 	}
 
 	public function getPluginDescription() 
