@@ -23,7 +23,7 @@ This plugin will add 4 new automatic actions to Kanboard.
 *4.) Send email of an impending subtask due date to assigned user*
 * This requires the [Subtask Due Date Plugin](https://github.com/eSkiSo/Subtaskdate) to function.
 
-*5.) Send comment by email.
+*5.) Send comment by email.*
 
 ## Send Email to Assignee
 
