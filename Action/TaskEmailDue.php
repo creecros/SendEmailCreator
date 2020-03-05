@@ -70,6 +70,40 @@ class TaskEmailDue extends Base
         return count($data['tasks']) > 0;
     }
 
+    public function makeDefaultSubject($task)
+    {
+        $project = $this->projectModel->getById($task['project_id']);
+        //print_r($project);
+        //print_r($task);
+
+        $remaining = $task['date_due'] - time();
+        $days_to_due = 0;
+        $seconds_to_due = 0;
+        $hours_to_due = 0;
+
+        if ( $remaining > 0 ) {
+            $days_to_due = floor($remaining / 86400);
+            $seconds_to_due = $remaining % 86400;
+            $hours_to_due = $seconds_to_due > 0 ? floor( $seconds_to_due / 3600  ) : 0;
+        }
+
+        $time_part = '';
+        if ( $days_to_due > 0 ) {
+            $time_part .= $days_to_due . ' day' . ($days_to_due == 1 ? '' : 's');
+            if ( $days_to_due < 2 && $hours_to_due > 0 ) {
+                $time_part .= ' and ' . $hours_to_due . ' hour' . ($hours_to_due == 1 ? '' : 's');
+            }
+        }
+        else if ( $hours_to_due > 0 ) {
+            $time_part = $hours_to_due . ' hour' . ($hours_to_due == 1 ? '' : 's');
+        }
+
+        $subject = '[' . $project['name']  . '][' . $task['title']  . '] ' . ($time_part ? 'Due in ' . $time_part : 'Task is due');
+        //print "\n".$subject."\n";
+
+        return $subject;
+    }
+
     public function doAction(array $data)
     {
         $results = array();
@@ -141,7 +175,7 @@ class TaskEmailDue extends Base
         $this->emailClient->send(
             $user['email'],
             $user['name'] ?: $user['username'],
-            $this->getParam('subject'),
+            $this->getParam('subject') ?: $this->makeDefaultSubject($task),
             $this->template->render('notification/task_create', array('task' => $task))
         );
         return true;
