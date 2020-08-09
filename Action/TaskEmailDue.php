@@ -73,8 +73,6 @@ class TaskEmailDue extends Base
     public function makeDefaultSubject($task)
     {
         $project = $this->projectModel->getById($task['project_id']);
-        //print_r($project);
-        //print_r($task);
 
         $remaining = $task['date_due'] - time();
         $days_to_due = 0;
@@ -103,60 +101,96 @@ class TaskEmailDue extends Base
 
         return $subject;
     }
-
+    
+    public function isTimeToSendEmail($project, $task)
+    {
+    	// Change $verbose to true while debugging
+    	$verbose = false;
+    	$verbose_prefix = $verbose ? "isTimeToSendEmail() - Task \"{$project['name']}::{$task['title']}({$task['id']})\" " : "";
+    	
+        // Don't send if the task doesn't have a due date
+        if ($task['date_due'] == 0) {
+            
+            $verbose && print "\n{$verbose_prefix}doesn't have a due date; Not time to send.";
+            
+            return false;
+        }
+        
+        // Don't send if the task itself isn't due soon enough
+        $max_duration = $this->getParam('duration') * 86400;
+        $duration = $task['date_due'] - time();
+        if ($duration >= $max_duration) {
+            
+            $verbose && print "\n{$verbose_prefix}isn't due soon enough ($duration v. $max_duration); Not time to send.";
+            
+            return false;
+        }
+        
+        // Don't send if we've already sent too recently
+        $minimum_email_span = 86400;
+        $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_toassignee', time() - 86400);
+        $last_email_span = time() - $last_emailed;
+        if ($last_email_span < $minimum_email_span) {
+            
+            $verbose && print "\n{$verbose_prefix}has already been emailed about too recently ($last_email_span v. $minimum_email_span); Not time to send.";
+            
+            return false;
+        }
+        
+        //
+        $verbose && print "\n{$verbose_prefix}Sending email!";
+        
+        return true;
+    }
+    
     public function doAction(array $data)
     {
         $results = array();
-        $max = $this->getParam('duration') * 86400;
-        
         
         if ($this->getParam('send_to') !== null) { $send_to = $this->getParam('send_to'); } else { $send_to = 'both'; }
         
         if ($send_to == 'assignee' || $send_to == 'both') {
-        foreach ($data['tasks'] as $task) {
-            $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_toassignee', time() - 86400);
-            $last_email_span = time() - $last_emailed;
-            if ($last_email_span >= 86400) { $send_email = true; } else { $send_email = false; }
             
-            $user = $this->userModel->getById($task['owner_id']);
-          
-                $duration = $task['date_due'] - time();
-                if ($task['date_due'] > 0) {
-                  if ($duration < $max) {
-                      if (! empty($user['email'])) {
-                          if ($send_email) {
+            foreach ($data['tasks'] as $task) {
+                
+                $project = $this->projectModel->getById($task['project_id']);
+                        
+                // Only email for active projects
+                if ( $project['is_active'] ) {
+                    
+                    // Decide if it's time to send an email
+                    $is_time_to_send = $this->isTimeToSendEmail($project, $task);
+                    if ($is_time_to_send) {
+                        
+                        $user = $this->userModel->getById($task['owner_id']);
+                        if (! empty($user['email'])) {
                             $results[] = $this->sendEmail($task['id'], $user);
                             $this->taskMetadataModel->save($task['id'], ['task_last_emailed_toassignee' => time()]);
-                          }
-                      }
-                  }
+                        }
+                    }
                 }
-           
-        }
+            }
         }
         
         if ($send_to == 'creator' || $send_to == 'both') {
-        foreach ($data['tasks'] as $task) {
-            $last_emailed = $this->taskMetadataModel->get($task['id'], 'task_last_emailed_tocreator', time() - 86400);
-            $last_email_span = time() - $last_emailed;
-            if ($last_email_span >= 86400) { $send_email = true; } else { $send_email = false; }
             
-            $user = $this->userModel->getById($task['creator_id']);
-           
-                $duration = $task['date_due'] - time();
-                if ($task['date_due'] > 0) {
-                  if ($duration < $max) {
+            foreach ($data['tasks'] as $task) {
+            
+                // Only email for active projects
+                if ( $project['is_active'] ) {
+                    
+                    // Only email is enough time has passed since the last one was sent
+                    $is_time_to_send = $this->isTimeToSendEmail($project, $task);
+                    if ( $is_time_to_send ) {
+                        
+                        $user = $this->userModel->getById($task['creator_id']);
                         if (! empty($user['email'])) {
-                          if ($send_email) {
                             $results[] = $this->sendEmail($task['id'], $user);
                             $this->taskMetadataModel->save($task['id'], ['task_last_emailed_tocreator' => time()]);
-                          }
                         }
-                                                        
-                  }
+                    }
                 }
-           
-        }
+            }
         }
         
         return in_array(true, $results, true);
@@ -172,10 +206,12 @@ class TaskEmailDue extends Base
     private function sendEmail($task_id, array $user)
     {
         $task = $this->taskFinderModel->getDetails($task_id);
+        $subject = $this->getParam('subject') ?: $this->makeDefaultSubject($task);
+        
         $this->emailClient->send(
             $user['email'],
             $user['name'] ?: $user['username'],
-            $this->getParam('subject') ?: $this->makeDefaultSubject($task),
+            $subject,
             $this->template->render('notification/task_create', array('task' => $task))
         );
         return true;
