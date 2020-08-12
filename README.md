@@ -17,7 +17,7 @@ Donate to help keep this project maintained.
 - It's the least you can do for all the work put into it!
 
 # Auto Email Extended Actions
-This plugin will add 4 new automatic actions to Kanboard.
+This plugin will add 5 new automatic actions to Kanboard.
 
 *1.) Send task by email to assignee*
 
