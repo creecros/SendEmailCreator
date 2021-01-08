@@ -30,7 +30,8 @@ class SendTaskAssignee extends Base
     {
         return array(
             'column_id' => t('Column'),
-	    'subject' => t('Email subject'),
+	        'subject' => t('Email subject'),
+	        'check_box_include_title' => t('Include Task Title and ID in subject line?'),
         );
     }
 
@@ -42,7 +43,8 @@ class SendTaskAssignee extends Base
             'task' => array(
                 'project_id',
                 'column_id',
-		'owner_id',
+                'title',
+		        'owner_id',
             ),
         );
     }
@@ -51,12 +53,18 @@ class SendTaskAssignee extends Base
     public function doAction(array $data)
     {
         $user = $this->userModel->getById($data['task']['owner_id']);
+        if ($this->getParam('check_box_include_title') == true ){
+            $subject = $this->getParam('subject') . ": " . $data['task']['title'] . "(#" . $data['task_id'] . ")";
+        } else {
+            $subject = $this->getParam('subject');
+        }
+        
 
                if (! empty($user['email'])) {
             $this->emailClient->send(
                 $user['email'],
                 $user['name'] ?: $user['username'],
-                $this->getParam('subject'),
+                $subject,
                 $this->template->render('notification/task_create', array(
                     'task' => $data['task'],
                 ))
