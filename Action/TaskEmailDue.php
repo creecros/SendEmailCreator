@@ -117,7 +117,7 @@ class TaskEmailDue extends Base
         }
         
         // Don't send if the task itself isn't due soon enough
-        $max_duration = $this->getParam('duration') * 86400;
+        (!empty($this->getParam('duration'))) ? $max_duration = $this->getParam('duration') * 86400 : $max_duration = 0;
         $duration = $task['date_due'] - time();
         if ($duration >= $max_duration) {
             
