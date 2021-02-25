@@ -71,8 +71,8 @@ class SubTaskEmailDue extends Base
     {
         $results = array();
         $subtasks = array();
-        $max = $this->getParam('duration') * 86400;
-        
+        (!empty($this->getParam('duration'))) ? $max = $this->getParam('duration') * 86400 : $max = 0;
+
         foreach ($data['tasks'] as $task) {
           $subtasks = $this->subtaskModel->getAll($task['id']);
             
