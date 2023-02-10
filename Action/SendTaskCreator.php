@@ -7,13 +7,12 @@ use Kanboard\Action\Base;
 
 class SendTaskCreator extends Base
 {
-   
     public function getDescription()
     {
         return t('Send a task by email to creator');
     }
 
-   
+
     public function getCompatibleEvents()
     {
         return array(
@@ -22,20 +21,20 @@ class SendTaskCreator extends Base
             TaskModel::EVENT_CREATE,
             TaskModel::EVENT_UPDATE,
             TaskModel::EVENT_ASSIGNEE_CHANGE,
-	);
+    );
     }
 
-   
+
     public function getActionRequiredParameters()
     {
         return array(
             'column_id' => t('Column'),
-	        'subject' => t('Email subject'),
-	        'check_box_include_title' => t('Include Task Title and ID in subject line?'),
+            'subject' => t('Email subject'),
+            'check_box_include_title' => t('Include Task Title and ID in subject line?'),
         );
     }
 
-   
+
     public function getEventRequiredParameters()
     {
         return array(
@@ -44,21 +43,21 @@ class SendTaskCreator extends Base
                 'project_id',
                 'column_id',
                 'title',
-		        'creator_id',
+                'creator_id',
             ),
         );
     }
 
-    
+
     public function doAction(array $data)
     {
         $user = $this->userModel->getById($data['task']['creator_id']);
-        if ($this->getParam('check_box_include_title') == true ){
+        if ($this->getParam('check_box_include_title') == true) {
             $subject = $this->getParam('subject') . ": " . $data['task']['title'] . "(#" . $data['task_id'] . ")";
         } else {
             $subject = $this->getParam('subject');
         }
-        
+
         if (! empty($user['email'])) {
             $this->emailClient->send(
                 $user['email'],
@@ -76,7 +75,7 @@ class SendTaskCreator extends Base
     }
 
 
-   
+
     public function hasRequiredCondition(array $data)
     {
         return $data['task']['column_id'] == $this->getParam('column_id');

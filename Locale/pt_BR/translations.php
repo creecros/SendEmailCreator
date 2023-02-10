@@ -1,4 +1,5 @@
 <?php
+
 return array(
   'Email subject' => 'Assunto do email',
   'Duration in days' => 'Duração em dias',
