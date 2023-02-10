@@ -18,8 +18,11 @@ class Plugin extends Base
         $this->actionManager->register(new SendTaskCreator($this->container));
         $this->actionManager->register(new SendTaskAssignee($this->container));
         $this->actionManager->register(new TaskEmailDue($this->container));
-        $this->actionManager->register(new SubTaskEmailDue($this->container));
         $this->actionManager->register(new SendTaskComment($this->container));
+        
+        if (file_exists('plugins/Subtaskdate')) {
+            $this->actionManager->register(new SubTaskEmailDue($this->container));
+        }
 
         $this->eventManager->register(CommentModel::EVENT_CREATE, 'On comment creation');
     }
