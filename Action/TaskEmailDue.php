@@ -45,6 +45,7 @@ class TaskEmailDue extends Base
             'subject' => t('Email subject'),
             'duration' => t('Duration in days'),
             'send_to' => array('assignee' => t('Send to Assignee'), 'creator' => t('Send to Creator'), 'both' => t('Send to Both')),
+            'column_id' => t('Choose a column to ignore, when a task is in this column, no emails will be sent.')
         );
     }
     /**
@@ -153,7 +154,7 @@ class TaskEmailDue extends Base
                 $project = $this->projectModel->getById($task['project_id']);
 
                 // Only email for active projects
-                if ($project['is_active']) {
+                if ($project['is_active'] && $task['column_id'] != $this->getParam('column_id')) {
                     // Decide if it's time to send an email
                     $is_time_to_send = $this->isTimeToSendEmail($project, $task);
                     if ($is_time_to_send) {
@@ -170,7 +171,7 @@ class TaskEmailDue extends Base
         if ($send_to == 'creator' || $send_to == 'both') {
             foreach ($data['tasks'] as $task) {
                 // Only email for active projects
-                if ($project['is_active']) {
+                if ($project['is_active'] && $task['column_id'] != $this->getParam('column_id')) {
                     // Only email is enough time has passed since the last one was sent
                     $is_time_to_send = $this->isTimeToSendEmail($project, $task);
                     if ($is_time_to_send) {

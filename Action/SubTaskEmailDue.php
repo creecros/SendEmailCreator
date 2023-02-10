@@ -43,6 +43,7 @@ class SubTaskEmailDue extends Base
         return array(
             // 'subject' => t('Email subject'),
             'duration' => t('Duration in days'),
+            'column_id' => t('Choose a column to ignore, when a task is in this column, no emails will be sent.')
         );
     }
     /**
@@ -116,7 +117,7 @@ class SubTaskEmailDue extends Base
             $project = $this->projectModel->getById($task['project_id']);
 
             // Only email for active projects
-            if ($project['is_active']) {
+            if ($project['is_active'] && $task['column_id'] != $this->getParam('column_id')) {
                 foreach ($subtasks as $subtask) {
                     $user = $this->userModel->getById($subtask['user_id']);
 
