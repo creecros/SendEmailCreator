@@ -170,6 +170,8 @@ class TaskEmailDue extends Base
 
         if ($send_to == 'creator' || $send_to == 'both') {
             foreach ($data['tasks'] as $task) {
+                $project = $this->projectModel->getById($task['project_id']);
+
                 // Only email for active projects
                 if ($project['is_active'] && $task['column_id'] != $this->getParam('column_id')) {
                     // Only email is enough time has passed since the last one was sent
