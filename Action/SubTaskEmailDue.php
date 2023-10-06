@@ -68,20 +68,20 @@ class SubTaskEmailDue extends Base
         return count($data['tasks']) > 0;
     }
 
-    public function isTimeToSendEmail($project, $task)
+    public function isTimeToSendEmail($project, $task, $subtask)
     {
         // Change $verbose to true while debugging
         $verbose = false;
         $verbose_prefix = $verbose ? "isTimeToSendEmail() - Task \"{$project['name']}::{$task['title']}({$task['id']})\" " : "";
 
-        // Don't send if the task doesn't have a due date
-        if ($task['date_due'] == 0) {
+        // Don't send if the subtask doesn't have a due date
+        if ($subtask['due_date'] == 0) {
             $verbose && print "\n{$verbose_prefix}doesn't have a due date; Not time to send.";
 
             return false;
         }
 
-        // Don't send if the task itself isn't due soon enough
+        // Don't send if the subtask itself isn't due soon enough
         (!empty($this->getParam('duration'))) ? $max_duration = $this->getParam('duration') * 86400 : $max_duration = 0;
         $duration = $subtask['due_date'] - time();
         if ($duration >= $max_duration) {
@@ -124,7 +124,7 @@ class SubTaskEmailDue extends Base
                     $duration = $subtask['due_date'] - time();
                     if ($subtask['due_date'] > 0) {
                         if ($subtask['status'] < 2) {
-                            $is_time_to_send = $this->isTimeToSendEmail($project, $task);
+                            $is_time_to_send = $this->isTimeToSendEmail($project, $task, $subtask);
                             if ($is_time_to_send) {
                                 if (! empty($user['email'])) {
                                     $results[] = $this->sendEmail($subtask['task_id'], $subtask['title'], $user);
