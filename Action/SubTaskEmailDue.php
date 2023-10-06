@@ -75,7 +75,7 @@ class SubTaskEmailDue extends Base
         $verbose_prefix = $verbose ? "isTimeToSendEmail() - Task \"{$project['name']}::{$task['title']}({$task['id']})\" " : "";
 
         // Don't send if the task doesn't have a due date
-        if ($subtask['due_date'] == 0) {
+        if ($subtask['date_due'] == 0) {
             $verbose && print "\n{$verbose_prefix}doesn't have a due date; Not time to send.";
 
             return false;
